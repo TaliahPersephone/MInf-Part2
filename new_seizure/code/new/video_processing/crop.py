@@ -59,13 +59,15 @@ def crop_chunk():
 
 	q.task_done()
 
+
+for i in range(5):
+	q.put(i)
+
+
 for i in range(5):
 	t = threading.Thread(target=crop_chunk)
 	t.daemon = True
 	t.start()
-
-for i in range(5):
-	q.put(i)
 
 
 q.join()
