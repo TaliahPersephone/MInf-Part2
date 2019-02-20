@@ -40,6 +40,6 @@ Thumbs.db
 
 # Extra Specific #
 ##################
-*pyenv/*
+pyvenv/*
 *.avi
 *.flv
