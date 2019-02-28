@@ -6,7 +6,7 @@ import sys
 
 base = '/home/taliah/Documents/Course/Project/new_seizure/'
 
-path = base + 'video/{}_chunks/'.format(sys.argv[1])
+path = base + 'data/{}/mats/'.format(sys.argv[1])
 dst = base + 'data/{}/'.format(sys.argv[1])
 target = base + 'video/video_chunks/targets/{}.csv' 
 
@@ -17,7 +17,7 @@ lst = []
 
 for root, dirs, files in os.walk(path):
 	for name in files:
-		if name.endswith('.avi'):
+		if name.endswith('.mat'):
 			count += 1
 			lst.append('{}/{}'.format(root,name))
 
@@ -37,7 +37,7 @@ for f in lst:
 	else:
 		place = 'test'
 
-	shutil.copyfile(f,'{}{}/{:04}.avi'.format(dst,place,current))
+	os.symlink(f,'{}{}/{:04}.mat'.format(dst,place,current))
 	shutil.copyfile(target.format(vid),'{}{}/targets/{:04}.csv'.format(dst,place,current))
 	current += 1
 	

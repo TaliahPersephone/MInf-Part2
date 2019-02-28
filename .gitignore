@@ -43,3 +43,6 @@ Thumbs.db
 pyvenv/*
 *.avi
 *.flv
+*.mat
+RealtimeHogHofMbhHmgReleaseSourceV1/*
+__MACOSX/*
