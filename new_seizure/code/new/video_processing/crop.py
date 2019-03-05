@@ -20,8 +20,8 @@ def crop_chunk():
 
 	vid_num = q.get()
 
-	file = open(spatial.format(vid_num))
-	boxes = csv.DictReader(file,delimiter=',')
+	f = open(spatial.format(vid_num))
+	boxes = csv.DictReader(f,delimiter=',')
 	count = 0
 
 	for box in boxes:	
@@ -29,12 +29,31 @@ def crop_chunk():
 		frame_n = round(float(box['Frame_number']))
 		
 		if (frame_n % 7500 == 0):
-			cap = cv.VideoCapture(vids.format(vid_num,frame_n))
-			out = cv.VideoWriter(out_vid.format(vid_num,frame_n),fourcc, 25.0, aspect)
+#			cap = cv.VideoCapture(vids.format(vid_num,frame_n))
+#			out = cv.VideoWriter(out_vid.format(vid_num,frame_n),fourcc, 25.0, aspect)
+			t_f = open(path+'video/video_chunks/targets/{:06}-{:05}.csv'.format(vid_num,frame_n))
+			target = csv.DictReader(t_f)
+
+			try:
+				t_o_f.close()
+			except:
+				pass
+
+			t_o_f = open(path + 'video/6464_chunks/targets/{:06}-{:05}.csv'.format(vid_num,frame_n),'w')
+			target_out = csv.DictWriter(t_o_f,fieldnames=target.fieldnames)
 			print('Vid - {}; Chunk - {}'.format(vid_num,frame_n))
 			count = 0
 	
+
+		time = next(target)
+
+		while(int(time['Frame_number']) != count):
+			time = next(target)
+
 		count += 1
+
+
+		target_out.writerow(time)
 
 		if (count % 1000 == 0):
 			print('Vid - {}; Count - {}'.format(vid_num,count))
@@ -56,6 +75,14 @@ def crop_chunk():
 		crop_64 = cv.resize(crop,aspect)
 
 		out.write(crop_64)
+		
+	f.close()
+
+	try:
+		t_f.close()
+		t_o_f.close()
+	except:
+		pass
 
 	q.task_done()
 

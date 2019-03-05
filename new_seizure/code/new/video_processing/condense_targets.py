@@ -1,40 +1,56 @@
 import csv
+import re
 import os
 import sys
 import threading
 import queue
 
-path = '/home/taliah/Documents/Course/Project/new_seizure/data/6464/'
+path = '/home/taliah/Documents/Course/Project/new_seizure/data/{}/targets/'.format(sys.argv[1])
 
 q = queue.Queue()
 
-condense = int(sys.argv[1])
-limit = int(float(sys.argv[2]) * condense) 
+condense = int(sys.argv[2])
+limit = int(float(sys.argv[3]) * condense) 
 count = 0 
 lst = []
 
+out = path + 'c{}-l{}'.format(condense,limit) 
+
+if not os.path.exists(out):
+    os.makedirs(out)
+
 def condense_targets():
-	target_file = q.get()
+	while True:
+		target_file = q.get()
+		print('Starting - {}'.format(target_file))
 
-	annotations = csv.DictReader(open(target_file))
-	targets_condense = csv.DictWriter(open('{}-c{}-l{}.csv'.format(target_file[:-4],condense,limit),'w'),fieldnames)
-	targets_condense.writeheader()
+		a = open(path+target_file)
+		f = open('{}/{}'.format(out,target_file),'w')
 
-	fieldnames=['Number','Target']
-
-	count = 0
-	val = 0
-
-	for row in annotations:
+		annotations = csv.reader(a)
+		targets_condense = csv.writer(f)
 	
-		count += 1
-		val += row['Target']
+	
+		count = 0
+		val = 0
+	
+		for row in annotations:
+		
+			count += 1
+			val += int(row[1])
+	
+			if count % condense == 0:
+				targets_condense.writerow([int((count / condense) - 1),int(val >= limit)])	
+				val = 0
+	
+			if count % 1000 == 0:
+				print('csv - {}\trow - {}'.format(target_file,count/condense - 1))
+	
+		
+		a.close()
+		f.close()
 
-		if count % condense == 0:
-			targets.writerow({'Number': ((count % 5) - 1),'Target':int(val >= limit)})	
-			val = 0
-
-	q.task_done()
+		q.task_done()
 
 
 
@@ -43,9 +59,10 @@ for i in range(8):
 	t.daemon = True
 	t.start()
 
-for root, dirs, files in os.walk(path):
-	for name in files:
-		if name.endswith('.csv'):
-			p.put('{}/{}'.format(root,name))
+
+for filename in os.listdir(path):
+	if filename.endswith('.csv'):
+		q.put('{}'.format(filename))
+
 
 q.join()

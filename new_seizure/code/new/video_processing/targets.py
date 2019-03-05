@@ -13,14 +13,19 @@ q = queue.Queue()
 def make_targets():
 	vid_num = q.get()
 
-	annotations = csv.DictReader(open(file_in.format(vid_num)))
+
+	f = open(file_in.format(nid_num))
+
+	annotations = csv.DictReader(f)
 	fieldnames=['Frame_number','Target']
 
 	for row in annotations:
 		frame = round(float(row['t'])) //40
 		if (frame % 7500 == 0):
 			print('Starting {:06}-{:05}'.format(vid_num,frame))
-			targets = csv.DictWriter(open(out.format(vid_num,frame),'w'),fieldnames)
+
+			t = open(out.format(vid_num,frame),'w')
+			targets = csv.DictWriter(t,fieldnames)
 			targets.writeheader()
 		target = bool(float(row['Clonic seizures'])) or \
 			bool(float(row['Absent seizures'])) or \
@@ -30,6 +35,7 @@ def make_targets():
 
 		targets.writerow({'Frame_number': (frame % 7500),'Target':int(target)})	
 
+	f.close()
 	q.task_done()
 
 

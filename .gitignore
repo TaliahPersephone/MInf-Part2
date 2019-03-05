@@ -44,5 +44,6 @@ pyvenv/*
 *.avi
 *.flv
 *.mat
+*.csv
 RealtimeHogHofMbhHmgReleaseSourceV1/*
 __MACOSX/*
