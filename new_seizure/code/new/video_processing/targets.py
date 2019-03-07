@@ -14,7 +14,7 @@ def make_targets():
 	vid_num = q.get()
 
 
-	f = open(file_in.format(nid_num))
+	f = open(file_in.format(vid_num))
 
 	annotations = csv.DictReader(f)
 	fieldnames=['Frame_number','Target']
@@ -23,7 +23,10 @@ def make_targets():
 		frame = round(float(row['t'])) //40
 		if (frame % 7500 == 0):
 			print('Starting {:06}-{:05}'.format(vid_num,frame))
-
+			try:
+				t.close()
+			except:
+				pass
 			t = open(out.format(vid_num,frame),'w')
 			targets = csv.DictWriter(t,fieldnames)
 			targets.writeheader()
@@ -35,6 +38,7 @@ def make_targets():
 
 		targets.writerow({'Frame_number': (frame % 7500),'Target':int(target)})	
 
+	t.close()
 	f.close()
 	q.task_done()
 

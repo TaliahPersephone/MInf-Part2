@@ -29,8 +29,8 @@ def crop_chunk():
 		frame_n = round(float(box['Frame_number']))
 		
 		if (frame_n % 7500 == 0):
-#			cap = cv.VideoCapture(vids.format(vid_num,frame_n))
-#			out = cv.VideoWriter(out_vid.format(vid_num,frame_n),fourcc, 25.0, aspect)
+			cap = cv.VideoCapture(vids.format(vid_num,frame_n))
+			out = cv.VideoWriter(out_vid.format(vid_num,frame_n),fourcc, 25.0, aspect)
 			t_f = open(path+'video/video_chunks/targets/{:06}-{:05}.csv'.format(vid_num,frame_n))
 			target = csv.DictReader(t_f)
 

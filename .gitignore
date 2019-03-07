@@ -44,6 +44,7 @@ pyvenv/*
 *.avi
 *.flv
 *.mat
-*.csv
+RealTime_dense_descriptors/*
+RealTime_dense_descriptors
 RealtimeHogHofMbhHmgReleaseSourceV1/*
 __MACOSX/*

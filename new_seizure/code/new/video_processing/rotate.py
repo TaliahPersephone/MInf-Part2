@@ -45,7 +45,7 @@ def rotate_chunk():
 
 		q.task_done()
 
-for i in range(16):
+for i in range(8):
 	t = threading.Thread(target=rotate_chunk)
 	t.daemon = True
 	t.start()
