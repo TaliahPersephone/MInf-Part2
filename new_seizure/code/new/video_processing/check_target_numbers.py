@@ -10,13 +10,14 @@ path = '/home/taliah/Documents/Course/Project/new_seizure/data/{}/'.format(sys.a
 
 q = queue.Queue()
 
-condense = int(sys.argv[2])
-limit = int(float(sys.argv[3]) * condense) 
+
+#condense = int(sys.argv[2])
+#limit = int(float(sys.argv[3]) * condense) 
 count = 0 
 lst = []
 
 mats = path + '/mats/original/'
-targets = path + 'targets/c{}-l{}/'.format(condense,limit) 
+targets = path + 'targets/'
 
 
 

@@ -1,17 +1,16 @@
 import shutil
-import random 
 import os
 import sys
 import numpy as np
 
-condense = int(sys.argv[2])
-limit = int(float(sys.argv[3]) * condense) 
+#condense = int(sys.argv[2])
+#limit = int(float(sys.argv[3]) * condense) 
 
 base = '/home/taliah/Documents/Course/Project/new_seizure/'
 
 path = base + 'data/{}/mats/'.format(sys.argv[1])
 dst = base + 'data/{}/'.format(sys.argv[1])
-con_target = base + 'data/{}/targets/c{}-l{}/{}.csv'.format(sys.argv[1],condense,limit,'{}') 
+#con_target = base + 'data/{}/targets/' #c{}-l{}/{}.csv'.format(sys.argv[1],condense,limit,'{}') 
 target = base + 'data/{}/targets/{}.csv'.format(sys.argv[1],'{}') 
 
 
@@ -55,7 +54,7 @@ for f in lst:
     		pass
 
 	os.symlink(f,'{}{}/{:04}.mat'.format(dst,place,name))
-	shutil.copyfile(con_target.format(vid),'{}{}/targets/c{}-l{}/{:04}.csv'.format(dst,place,condense,limit,name))
+	#shutil.copyfile(con_target.format(vid),'{}{}/targets/c{}-l{}/{:04}.csv'.format(dst,place,condense,limit,name))
 	shutil.copyfile(target.format(vid),'{}{}/targets/{:04}.csv'.format(dst,place,name))
 	current += 1
 	
