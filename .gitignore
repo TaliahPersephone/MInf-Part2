@@ -49,4 +49,5 @@ RealTime_dense_descriptors
 RealtimeHogHofMbhHmgReleaseSourceV1/*
 __MACOSX/*
 *.h5
+*.hdf5
 working*

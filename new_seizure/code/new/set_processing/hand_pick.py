@@ -54,29 +54,43 @@ for row in f:
 		if chunk == chunk2:
 			to_take[chunk] += [(pair[0],pair[1])]
 		else:
-			to_take[chunk] += [(pair[0],chunk+7476)]
+			to_take[chunk] += [(pair[0]-24,chunk+7476)]
 			to_take[chunk2] += [(chunk2,pair[1])]
 	
 	#print(chunks)
 	#print(to_take)
 
+	
+	zero_from_each = np.repeat(round(10000/chunks.shape[0]),chunks.shape[0])
 
-	zero_from_each = round(10000/chunks.shape[0])
+	zero_from_each[0] += 10000 - np.sum(zero_from_each)
+		
 
+	c = 0
+	total_frames = 0
 	for chunk in chunks:
 
 		print(chunk)
-
+		print(to_take[chunk])
+		#print(len(to_take[chunk]))
 		ones = np.arange(to_take[chunk][0][0]-chunk,to_take[chunk][0][1]-chunk)
 
-		free = r.choice(np.setdiff1d(np.arange(7476),ones),zero_from_each)
+		for i in range(1,len(to_take[chunk])):
+			ones = np.append(ones,np.arange(to_take[chunk][i][0]-chunk,to_take[chunk][i][1]-chunk))
+
+
+		free = r.choice(np.setdiff1d(np.arange(7476),ones),zero_from_each[c],replace=False)
+
+		print('ones size: {}\tfree size: {}'.format(ones.size * 5,free.size))
+
+		total_frames += ones.size * 5 + free.size
 
 		mat = sio.loadmat(path.format('',vid,chunk))['dataFull']
 
 		new = mat[free]
 
 		data.append(new)
-		targets.append(np.zeros(zero_from_each,dtype=int))
+		targets.append(np.zeros(zero_from_each[c],dtype=int))
 
 		new = mat[ones]
 			
@@ -109,6 +123,10 @@ for row in f:
 		targets.append(new_targets)
 		targets.append(new_targets)
 		
+		print('Runing total: {}\n'.format(total_frames))
+		c+=1
+
+	if total_frames != 40000: raise Exception('Naughty number {}'.format(count))
 
 	bulk.close()
 

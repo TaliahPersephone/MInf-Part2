@@ -3,17 +3,23 @@ from histdata import load_data
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.optimizers import RMSprop
+import logging
+import sys
 
 print("Basic network for baselines on histogram data\n")
+
+logging.basicConfig(filename='logs/{}.log'.format(sys.argv[1]), level=logging.INFO)
 
 seed = 287942
 
 batch_size = 128
 num_classes = 1
-epochs = 20
+epochs = 5
 
 # the data, split between train and test sets
-(x_train, y_train), (x_test, y_test) = load_data()
+(x_train, y_train), (x_test, y_test) = load_data(0)
+
+logging.info('Basic on fold 0 with 2x512 dense layers, 0.2 dropout, relu')
 
 print(x_train.shape[0], 'train samples')
 print(x_test.shape[0], 'test samples')
@@ -40,4 +46,6 @@ history = model.fit(x_train, y_train,
 score = model.evaluate(x_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+
+logging.info(score)
 
