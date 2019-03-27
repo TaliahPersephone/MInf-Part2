@@ -16,12 +16,19 @@ def rotate_chunk():
 
 		count = 0
 		
+		if angle == -1:
+			s = 'n1'
+		elif angle == -2:
+			s = 'n2'
+		else:
+			s = str(angle)
+		
 		if(flipped):
 			cap = cv.VideoCapture(path +'h_flip/' + title)
-			out = cv.VideoWriter(path + 'h_flip_' + str(angle) + '/' + title,fourcc, 25.0, aspect)
+			out = cv.VideoWriter(path + 'h_flip_' + s + '/' + title,fourcc, 25.0, aspect)
 		else:
 			cap = cv.VideoCapture(path +'original/' + title)
-			out = cv.VideoWriter(path + 'original_' + str(angle) + '/' + title,fourcc, 25.0, aspect)
+			out = cv.VideoWriter(path + 'original_' + s + '/' + title,fourcc, 25.0, aspect)
 
 		while(cap.isOpened()):	
 			if (count % 1000 == 0):
