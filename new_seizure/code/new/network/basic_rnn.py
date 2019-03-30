@@ -35,11 +35,7 @@ for i in range(folds):
 	model = Sequential()
 	model.add(Reshape((1,x_train.shape[1]),input_shape=(x_train.shape[1],)))
 	model.add(LSTM(layer_size, input_shape=(batch_size,1,x_train.shape[1]), return_sequences=True,kernel_initializer='random_normal'))
-	#model.add(BatchNormalization())
-	#model.add(Activation('relu'))
 	model.add(LSTM(layer_size, return_sequences=False,kernel_initializer='random_normal', dropout=0.2))
-	#model.add(BatchNormalization())
-	#model.add(Activation('relu'))
 	model.add(Dense(num_classes, activation='sigmoid'))
 	
 	model.summary()
