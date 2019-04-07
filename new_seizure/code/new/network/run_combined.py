@@ -1,4 +1,5 @@
 import keras
+import numpy as np
 import os
 from combined_data_generator import combined_data_generator
 from keras.models import Model,Sequential
@@ -20,7 +21,7 @@ def get_model(batch_size=623):
 	x = Conv2D(20, kernel_size=5,padding='same',activation='relu')(x)
 	x = BatchNormalization()(x)
 	x = MaxPooling2D(pool_size=(2,2),strides=(2,2))(x)
-	x = Conv2D(20, kernel_size=3,padding='same',activation='relu')(x)
+	x = Conv2D(40, kernel_size=3,padding='same',activation='relu')(x)
 	x = BatchNormalization()(x)
 	x = MaxPooling2D(pool_size=(2,2),strides=(2,2))(x)
 	x = Flatten()(x)
@@ -29,15 +30,16 @@ def get_model(batch_size=623):
 	hist_input = Input(shape=(6272,), name='hist_input')
 
 	y = BatchNormalization()(hist_input)
+	y = Dense(1024,activation='relu')(y)
 	y = Dense(512,activation='relu')(y)
 
 	x = concatenate([x, y])
 
 	x = BatchNormalization()(x)
 
-	x = Reshape((1,-1))(x)
+	#x = Reshape((1,-1))(x)
 
-	x = LSTM(256)(x)
+	x = Dense(256)(x)
 
 	out = Dense(1,activation='sigmoid')(x)
 
@@ -51,9 +53,9 @@ logging.basicConfig(filename='logs/{}.log'.format(sys.argv[1]), level=logging.IN
 
 seed = 287942
 
-batch_size = 623
+batch_size = 534
 num_classes = 1
-epochs = 5
+epochs = 2
 
 features = 6272
 
@@ -71,40 +73,46 @@ for filename in os.listdir(path):
 
 logging.info('Combined Model ')
 logging.info('Batch_size {}, epochs {}'.format(batch_size,epochs))
+scores = np.zeros(4)
 
 mutex = Lock()
 
-train_gen = combined_data_generator(files = files[int(0.1*len(files)):],seed = seed, batch_size = batch_size,lock=mutex)
-val_gen = combined_data_generator(files = files[:int(0.1*len(files))],seed = seed, batch_size = batch_size,lock=mutex)
+for i in range(4):
 
-model = get_model()
+	v = np.arange(int(len(files)/10)*i,int(len(files)/10)*(i+1)) 
+	t = np.setdiff1d(np.arange(len(files)),v)
 
+	files_train = files
+	train_gen = combined_data_generator(files = [files[i] for i in t],seed = seed, batch_size = batch_size,lock=mutex)
+	val_gen = combined_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,lock=mutex)
+	
+	model = get_model(batch_size)
+	
+	
+	model.compile(loss='binary_crossentropy',
+	              optimizer='adam',
+	              metrics=['accuracy'])
+	
+	#print(model.summary())
+	logging.info(model.summary())
+	
+	filepath = 'models/fold{}.combined_dense.weights.best.hdf5'.format(i)
+	checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+	callbacks_list = [checkpoint]
+	
+	history = model.fit_generator(train_gen,
+			epochs=epochs,
+			verbose=1,
+			validation_data=val_gen, max_queue_size = 4, 
+			use_multiprocessing = True,
+			callbacks = callbacks_list,
+			workers = 4)
+	
+	score = model.evaluate_generator(val_gen)
+	print('Test loss:', score[0])
+	print('Test accuracy:', score[1])
+	
+	scores[i] = score[1]
+	logging.info(score)
 
-model.compile(loss='binary_crossentropy',
-              optimizer='adam',
-              metrics=['accuracy'])
-
-#print(model.summary())
-logging.info(model.summary())
-
-i = 0
-
-filepath = 'fold{}.combined.weights.best.hdf5'.format(i)
-checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-callbacks_list = [checkpoint]
-
-history = model.fit_generator(train_gen,
-		epochs=epochs,
-		verbose=1,
-		validation_data=val_gen, max_queue_size = 4, 
-		use_multiprocessing = True,
-		callbacks = callbacks_list,
-		workers = 4)
-
-score = model.evaluate_generator(val_gen)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
-
-logging.info(score)
-
-
+print(np.mean(scores))
