@@ -1,0 +1,23 @@
+INFO:root:Folds:7
+Layers:2	Size:512
+Epochs:20
+Batch:128
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:Fold:0	Test Loss:1.5942090113172387	Test Acc:0.7987872302479044
+INFO:root:Fold:1	Test Loss:0.4237880866767075	Test Acc:0.9451578384162653
+INFO:root:Fold:2	Test Loss:1.8583206824971874	Test Acc:0.8597021580167648
+INFO:root:Fold:3	Test Loss:1.1388357219489602	Test Acc:0.8171838772962369
+INFO:root:Fold:4	Test Loss:0.6789320808642857	Test Acc:0.9228731942215088
+INFO:root:Fold:5	Test Loss:0.8673002519650705	Test Acc:0.8867843766720171
+INFO:root:Fold:6	Test Loss:1.4081343733873388	Test Acc:0.8494292848225432
+INFO:root:==================
+Acc:0.8685597085276058	Loss:1.13850288695097
+================
