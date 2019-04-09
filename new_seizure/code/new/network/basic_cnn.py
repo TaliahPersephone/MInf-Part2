@@ -38,13 +38,12 @@ logging.info('Batch_size {}, epochs {}'.format(batch_size,epochs))
 
 mutex = Lock()
 
-scores = np.zeros(3)
-for i in range(2,5):
+scores = np.zeros(4)
+for i in range(4):
 
 	v = np.arange(int(len(files)/10)*i,int(len(files)/10)*(i+1)) 
 	t = np.setdiff1d(np.arange(len(files)),v)
 
-	files_train = files
 	train_gen = cnn_data_generator(files = [files[i] for i in t],seed = seed, batch_size = batch_size,lock=mutex)
 	val_gen = cnn_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,lock=mutex)
 
@@ -70,7 +69,7 @@ for i in range(2,5):
 	model.summary()
 	
 	model.compile(loss='binary_crossentropy',
-	              optimizer=RMSprop(),
+	              optimizer='adam',
 	              metrics=['accuracy'])
 
 	filepath = 'fold{}.cnn.weights.best.hdf5'.format(i)
@@ -89,7 +88,7 @@ for i in range(2,5):
 	print('Test loss:', score[0])
 	print('Test accuracy:', score[1])
 	
-	scores[i-2] = score[1]
+	scores[i] = score[1]
 	logging.info(score)
 
 print(np.mean(scores))

@@ -1,0 +1,26 @@
+INFO:root:Basic with 20cnn k=5, 40cnn k=3, 256 dense, batch normalisation, relu
+INFO:root:Batch_size 623, epochs 2
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:Basic with 20cnn k=5, 40cnn k=3, 256 dense, batch normalisation, relu
+INFO:root:Batch_size 623, epochs 2
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:Basic with 20cnn k=5, 40cnn k=3, 256 dense, batch normalisation, relu
+INFO:root:Batch_size 623, epochs 2
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:[0.6100055124610663, 0.9225989818572998]
+INFO:root:[2.6573250631491345, 0.8138911175231139]
