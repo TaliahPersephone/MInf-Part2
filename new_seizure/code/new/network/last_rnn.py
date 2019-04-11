@@ -6,7 +6,6 @@ from hist_data_generator import hist_data_generator
 from keras.callbacks import ModelCheckpoint
 import sys
 import os
-import argparse
 from threading import Lock
 import numpy as np
 import random
@@ -40,16 +39,16 @@ for i in range(4):
 	v = np.arange(int(len(files)/10)*i,int(len(files)/10)*(i+1)) 
 	t = np.setdiff1d(np.arange(len(files)),v)
 
-	train_gen = hist_data_generator(files = [files[i] for i in t],seed = seed, batch_size = batch_size,contiguous=True,lock=mutex)
-	val_gen = hist_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,contiguous=True,lock=mutex)
+	train_gen = hist_data_generator(files = [files[i] for i in t],seed = seed, batch_size = batch_size,lock=mutex)
+	val_gen = hist_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,lock=mutex)
 
 	model = Sequential()
-	model.add(Reshape((1,-1),input_shape=(6272,)))
-	model.add(LSTM(512, activation='relu', return_sequences = True))
+	model.add(Dense(512, activation='relu',input_shape=(6272,)))
 	model.add(BatchNormalization())
-	model.add(LSTM(512, activation='relu'))
+	model.add(Dense(512, activation='relu'))
 	model.add(BatchNormalization())
-	model.add(Dense(num_classes, activation='sigmoid'))
+	model.add(Reshape((1,-1)))
+	model.add(LSTM(num_classes, activation='sigmoid',return_sequences=False))
 	
 	model.summary()
 	
@@ -64,10 +63,11 @@ for i in range(4):
 	history = model.fit_generator(train_gen,
 	                    epochs=epochs,
 	                    verbose=1,
-	                    validation_data=val_gen, max_queue_size = 5, 
-	                    use_multiprocessing = True,
-                            callbacks = callbacks_list,
-	                    workers = 4)
+	                    validation_data=val_gen, max_queue_size = 4, 
+	                    use_multiprocessing = False,
+	                    #workers = 4)
+                            callbacks = callbacks_list)
+
 	
 	score = model.evaluate_generator(val_gen)
 	scores[i] = score[1]
@@ -77,3 +77,4 @@ for i in range(4):
 	print('Test accuracy:', score[1])
 
 print(np.mean(scores))
+

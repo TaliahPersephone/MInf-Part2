@@ -37,11 +37,11 @@ def get_model(batch_size=623):
 
 	x = BatchNormalization()(x)
 
-	#x = Reshape((1,-1))(x)
-
 	x = Dense(256)(x)
 
-	out = Dense(1,activation='sigmoid')(x)
+	x = Reshape((1,-1))(x)
+
+	out = LSTM(1,activation='sigmoid')(x)
 
 	combined = Model(inputs = [cnn_input, hist_input], outputs = out)
 
@@ -49,13 +49,12 @@ def get_model(batch_size=623):
 
 print("Combine Model\n")
 
-logging.basicConfig(filename='logs/{}.log'.format(sys.argv[1]), level=logging.INFO)
 
 seed = 287942
 
 batch_size = 534
 num_classes = 1
-epochs = 2
+epochs = 3
 
 features = 6272
 
@@ -71,8 +70,7 @@ for filename in os.listdir(path):
 		
 
 
-logging.info('Combined Model ')
-logging.info('Batch_size {}, epochs {}'.format(batch_size,epochs))
+print('Batch_size {}, epochs {}'.format(batch_size,epochs))
 scores = np.zeros(4)
 
 mutex = Lock()
@@ -93,8 +91,7 @@ for i in range(4):
 	              optimizer='adam',
 	              metrics=['accuracy'])
 	
-	#print(model.summary())
-	logging.info(model.summary())
+	print(model.summary())
 	
 	filepath = 'models/fold{}.combined_dense.weights.best.hdf5'.format(i)
 	checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
@@ -112,7 +109,4 @@ for i in range(4):
 	print('Test loss:', score[0])
 	print('Test accuracy:', score[1])
 	
-	scores[i] = score[1]
-	logging.info(score)
 
-print(np.mean(scores))

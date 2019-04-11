@@ -6,7 +6,6 @@ from hist_data_generator import hist_data_generator
 from keras.callbacks import ModelCheckpoint
 import sys
 import os
-import argparse
 from threading import Lock
 import numpy as np
 import random
@@ -40,8 +39,8 @@ for i in range(4):
 	v = np.arange(int(len(files)/10)*i,int(len(files)/10)*(i+1)) 
 	t = np.setdiff1d(np.arange(len(files)),v)
 
-	train_gen = hist_data_generator(files = [files[i] for i in t],seed = seed, batch_size = batch_size,contiguous=True,lock=mutex)
-	val_gen = hist_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,contiguous=True,lock=mutex)
+	train_gen = hist_data_generator(files = [files[i] for i in t],seed = seed, batch_size = batch_size,lock=mutex)
+	val_gen = hist_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,lock=mutex)
 
 	model = Sequential()
 	model.add(Reshape((1,-1),input_shape=(6272,)))
@@ -77,3 +76,4 @@ for i in range(4):
 	print('Test accuracy:', score[1])
 
 print(np.mean(scores))
+

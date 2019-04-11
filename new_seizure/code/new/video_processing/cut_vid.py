@@ -44,11 +44,9 @@ def cut_vid():
 		if fn%chunk_size == 0:
 			print('next-video/t',fn)
 			out.release()
-			#out = cv.VideoWriter(path+'video-chunks/'+fileName[:-4]+"-"+str(fn)+'.flv',fourcc, 25.0, (1200,500))
 			out = cv.VideoWriter(path+'video_chunks/'+fileName[:-4]+"-"+"%05d" % fn+'.avi',fourcc, 25.0, (1200,500))
 		
 		if ret==True:
-			#frame = cv.flip(frame,0)
 			# write the flipped frame
 			out.write(frame)
 			if DISPLAY == 1:
