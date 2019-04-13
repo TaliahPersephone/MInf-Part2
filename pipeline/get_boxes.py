@@ -14,10 +14,10 @@ import csv
 '	o - queue to ouput box information to
 '''
 def get_boxes(i, o):
-	boxes = csv.DictReader(i)
+	boxes = csv.reader(open(i))
 
 	for row in boxes:
-		box = [float(idx) for idx in list(row.values())]
+		box = [float(val) for val in row]
 		
 		o.put(box)
 	

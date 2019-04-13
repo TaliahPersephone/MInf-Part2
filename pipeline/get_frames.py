@@ -12,6 +12,7 @@
 
 import queue
 import cv2 as cv
+import numpy as np
 
 
 '''
@@ -23,7 +24,7 @@ import cv2 as cv
 '
 '''
 def get_frames(i, boxes, o):
-	cap = cv.VideoReader(i)
+	cap = cv.VideoCapture(i)
 
 	count = 0
 
@@ -38,13 +39,13 @@ def get_frames(i, boxes, o):
 
 		box_frame = box[0]
 
-		while (box_frame < count):
+		while (box_frame - 30000 < count):
 			print('Skipping box')
 			box = boxes.get()
 	
 
-		old_count = 0
-		while (box_frame > count):
+		old_count = count
+		while (box_frame - 30000 > count):
 			ret, frame = cap.read()
 			count += 1
 
@@ -55,12 +56,12 @@ def get_frames(i, boxes, o):
 			break
 
 		if frame.shape[-1] == 3:
-			frame = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
+			frame = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)/255
 
 
-		c = [round(box[1])),round(box[2])]
+		c = [round(box[1]),round(box[2])]
 		# The max ensures that the box is square
-		l = max(box[3],box[4]))
+		l = max(box[3],box[4])
 		
 		l = round(l/2)
 
@@ -73,7 +74,13 @@ def get_frames(i, boxes, o):
 
 
 		crop = frame[y_0:y_1,x_0:x_1] 	
+
 		crop_64 = np.array(cv.resize(crop,(64,64)))
+
+		if o.full():
+			print('full')
+			count += 1
+			continue
 
 		o.put((count,crop_64))
 

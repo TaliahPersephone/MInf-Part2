@@ -1,8 +1,9 @@
 import keras
 from keras.models import Sequential
-from keras.layers import SimpleRNN,Dense, BatchNormalization, LSTM, Reshape
+from keras.layers import SimpleRNN,Dense, BatchNormalization, LSTM, Reshape, Conv2D, MaxPooling2D, Flatten, Activation
 from keras.optimizers import RMSprop
 from hist_data_generator import hist_data_generator
+from cnn_data_generator import cnn_data_generator
 from keras.callbacks import ModelCheckpoint
 import sys
 import os
@@ -13,15 +14,23 @@ import random
 import keras.backend as K
 
 
-def confusion(y_true, y_pred):
+def tp(y_true, y_pred):
     y_pred_pos = K.round(K.clip(y_pred, 0, 1))
     y_pred_neg = 1 - y_pred_pos
     y_pos = K.round(K.clip(y_true, 0, 1))
     y_neg = 1 - y_pos
     tp = K.sum(y_pos * y_pred_pos) / (K.sum(y_pos) + 0.000000001)
     tn = K.sum(y_neg * y_pred_neg) / (K.sum(y_neg) + 0.000000001)
-    return {'true_pos': tp, 'true_neg': tn}
+    return tp
 
+def tn(y_true, y_pred):
+    y_pred_pos = K.round(K.clip(y_pred, 0, 1))
+    y_pred_neg = 1 - y_pred_pos
+    y_pos = K.round(K.clip(y_true, 0, 1))
+    y_neg = 1 - y_pos
+    tp = K.sum(y_pos * y_pred_pos) / (K.sum(y_pos) + 0.000000001)
+    tn = K.sum(y_neg * y_pred_neg) / (K.sum(y_neg) + 0.000000001)
+    return tn
 
 def get_model(args,i):
 	hidden_units = args.size
@@ -44,14 +53,15 @@ def get_model(args,i):
 		model.add(Dense(256, activation=None))
 		model.add(BatchNormalization())
 		model.add(Activation('relu'))
-		model.add(Dense(num_classes, activation='sigmoid'))
+		model.add(Dense(1, activation='sigmoid'))
 		
+		model.summary()
 		
 		model.compile(loss='binary_crossentropy',
 		              optimizer='adam',
-		              metrics=['accuracy',confusion])
+		              metrics=[tp,tn])
 	
-		filepath = 'fold{}.cnn.weights.best.hdf5'.format(i)
+		filepath = 'models/fold{}.cnn.weights.best.hdf5'.format(i)
 
 		model.load_weights(filepath)
 
@@ -72,21 +82,23 @@ def get_model(args,i):
 	
 		elif args.last == 'LSTM':
 			model.add(Reshape((1,-1)))
-			model.add(LSTM(num_classes, activation='sigmoid'))
+			model.add(LSTM(1, activation='sigmoid'))
 	
 		elif args.last == 'Simple':
 			model.add(Reshape((1,-1)))
-			model.add(SimpleRNN(num_classes, activation='sigmoid'))
+			model.add(SimpleRNN(1, activation='sigmoid'))
 		
 		model.summary()
 		
 		model.compile(loss='binary_crossentropy',
 		              optimizer='adam',
-		              metrics=['accuracy',confusion])
+		              metrics=[tp,tn])
 		
-		filepath = 'models/fold{}.{}l.{}h.{}-last.weights.best.hdf5'.format(i,args.layers,args.hidden_units,args.last)
+		filepath = 'models/fold{}.last_lstm.{}l.{}h.weights.best.hdf5'.format(i,args.layers,args.size,args.last)
 		model.load_weights(filepath)
 
+
+	return model
 
 
 parser = argparse.ArgumentParser()
@@ -117,7 +129,10 @@ for i in range(4):
 
 	v = np.arange(int(len(files)/10)*i,int(len(files)/10)*(i+1)) 
 
-	val_gen = hist_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
+	if args.model == 'hist':
+		val_gen = hist_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
+	elif args.model == 'cnn':
+		val_gen = cnn_data_generator(files = [files[i] for i in v],seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
 
 	model = get_model(args,i)
 	
