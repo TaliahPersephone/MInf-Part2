@@ -18,11 +18,11 @@ from lr import step_decay
 parser = argparse.ArgumentParser()
 parser.add_argument('--layers', type=int, default = 2)
 parser.add_argument('--size',type=int, default = 512)
-parser.add_argument('--last',default='Dense')
-parser.add_argument('--cont',type=bool,default=False)
+parser.add_argument('--cont',type=bool,default=True)
 parser.add_argument('--f',type=int,default=0)
 #parser.add_argument('--t',type=int,default=4)
 parser.add_argument('--epoch',type=int,default=5)
+parser.add_argument('--coords',default='start')
 args = parser.parse_args()
 
 mutex = Lock()
@@ -56,8 +56,8 @@ for j in files:
 	if j not in v:
 		t += [j]
 
-train_gen = hist_data_generator(files = t,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
-val_gen = hist_data_generator(files = v,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
+train_gen = hist_data_generator(files = t,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex,coords=args.coords)
+val_gen = hist_data_generator(files = v,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex,coords=args.coords)
 
 sizes = []
 
@@ -65,11 +65,15 @@ for j in range(layers):
 	sizes += [hidden_units]
 
 
+if args.coords == 'start':
+	model = coords_start_hist_model(layers,sizes)
+else:
+	model = coords_end_hist_model(layers,sizes)
 
-model = hist_model(layers,sizes,args.last)
+
 lrate = LearningRateScheduler(step_decay)
 
-filepath = 'models/fold{}.{}l.{}h.{}-last.weights.best.hdf5'.format(i,layers,hidden_units,args.last)
+filepath = 'models/fold{}.{}l.{}h.coords-{}.weights.best.hdf5'.format(i,layers,hidden_units,args.coords)
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint,lrate]
 
@@ -84,5 +88,6 @@ keras.backend.clear_session()
 del model
 del train_gen
 del val_gen
+
 
 

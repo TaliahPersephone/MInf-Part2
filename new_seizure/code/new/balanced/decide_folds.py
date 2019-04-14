@@ -13,7 +13,7 @@ n = np.array([])
 files = []
 
 for filename in os.listdir(path):
-	if filename[5] != '4': 
+	if filename[5] != '4' and filename.endswith('h5'): 
 		f = tables.open_file('{}/{}'.format(path,filename))
 		n = np.append(n, f.root.balance_targets[:].size)
 		files += [filename]

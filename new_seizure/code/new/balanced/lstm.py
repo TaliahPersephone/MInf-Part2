@@ -39,7 +39,7 @@ path = '/home/taliah/Documents/Course/Project/new_seizure/data/6464/h5'
 files = []
 
 for filename in os.listdir(path):
-	if filename[5] != '4': 
+	if filename[5] != '4'and filename.endswith('h5'): 
 		files += [filename]
 
 print("batch = {}".format(batch_size))
@@ -82,7 +82,7 @@ for i in range(args.f,args.t ):
 		model.add(SimpleRNN(num_classes, activation='sigmoid'))
 	
 	model.summary()
-	adam = Adam(0.00001)
+	adam = Adam(0.0001)
 
 	lrate = LearningRateScheduler(step_decay)
 	
@@ -100,11 +100,11 @@ for i in range(args.f,args.t ):
 	                    validation_data=val_gen, max_queue_size = 4, 
                             callbacks = callbacks_list)
 	
+	keras.backend.clear_session()
 
 	del model
 	del train_gen
 	del val_gen 
 	
-	keras.backend.clear_session()
 
 

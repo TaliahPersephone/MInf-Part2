@@ -7,12 +7,14 @@ from threading import Lock
 path = '/home/taliah/Documents/Course/Project/new_seizure/data/6464/h5/{}'
 
 class cnn_data_generator(Sequence):
-	def __init__(self,files, flips = ['original'],orientations = ['','_1','_n1','_2','_n2'], batch_size = 534, seed = 2573, contiguous = False, lock = None):
+	def __init__(self,files, flips = ['original'],orientations = ['','_1','_n1','_2','_n2'], batch_size = 534, seed = 2573, contiguous = False, lock = None, coords = True):
 		flips = ['balance_{}'.format(i) for i in flips]
 
 		trans = [''.join(i) for i in product(flips,orientations)]
 
 		self.files = product(files,trans)
+
+		self.coords = coords
 
 		src = []
 
@@ -58,9 +60,14 @@ class cnn_data_generator(Sequence):
 
 		targets = f.root.balance_targets[:][inds]
 
+		coords = f.root.balance_coords[:][inds]
+
 		f.close()
 
 		self.mutex.release()
 
-		return data, targets
+		if self.coords == True:
+			return [data,coords], targets
+		else:
+			return data, targets
 
