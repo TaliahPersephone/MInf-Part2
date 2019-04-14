@@ -5,7 +5,7 @@ from keras.models import Sequential
 from keras.layers import SimpleRNN,Dense, BatchNormalization, LSTM, Reshape
 from keras.optimizers import RMSprop, Adam
 from hist_data_generator import hist_data_generator
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler
+from keras.callbacks import ModelCheckpoint, LearningRateScheduler,CSVLogger
 import sys
 import os
 from threading import Lock
@@ -21,6 +21,7 @@ parser.add_argument('--size',type=int, default = 512)
 parser.add_argument('--last',default='Dense')
 parser.add_argument('--cont',type=bool,default=False)
 parser.add_argument('--f',type=int,default=0)
+parser.add_argument('--v',type=int,default=1)
 #parser.add_argument('--t',type=int,default=4)
 parser.add_argument('--epoch',type=int,default=5)
 args = parser.parse_args()
@@ -68,14 +69,15 @@ for j in range(layers):
 
 model = hist_model(layers,sizes,args.last)
 lrate = LearningRateScheduler(step_decay)
+csv_logger = CSVLogger('logs/full_hist_{}_{}x{}.log'.format(i,layers,hidden_units,args.coords),append=True)
 
 filepath = 'models/fold{}.{}l.{}h.{}-last.weights.best.hdf5'.format(i,layers,hidden_units,args.last)
-checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-callbacks_list = [checkpoint,lrate]
+checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=args.v, save_best_only=True, mode='max')
+callbacks_list = [checkpoint,lrate,csv_logger]
 
 history = model.fit_generator(train_gen,
                     epochs=epochs,
-                    verbose=1,
+                    verbose=args.v,
                     validation_data=val_gen, max_queue_size = 4, 
                     callbacks = callbacks_list)
 

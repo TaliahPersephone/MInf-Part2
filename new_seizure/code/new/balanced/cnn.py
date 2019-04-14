@@ -5,7 +5,7 @@ from cnn_data_generator import cnn_data_generator
 from keras.models import Sequential
 from keras.layers import Flatten,Reshape, Conv2D, BatchNormalization, Dense, Dropout, Activation, MaxPooling2D, LSTM, SimpleRNN
 from keras.optimizers import Adam
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler
+from keras.callbacks import ModelCheckpoint, LearningRateScheduler,CSVLogger
 from lr import step_decay
 import logging
 import sys
@@ -28,6 +28,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--cont',type=str2bool,default=True)
 parser.add_argument('--coords',type=str2bool,default=True)
 parser.add_argument('--f',type=int,default=0)
+parser.add_argument('--v',type=int,default=1)
 parser.add_argument('--epoch',type=int,default=2)
 args = parser.parse_args()
 args = parser.parse_args()
@@ -68,14 +69,15 @@ val_gen = cnn_data_generator(files = v,seed = seed, batch_size = batch_size,cont
 model = cnn_model(args.coords)
 
 lrate = LearningRateScheduler(step_decay)
+csv_logger = CSVLogger('logs/full_cnn_mk2.log',append=True)
 
 filepath = 'models/fold{}.cnn_lstm_coords_end.weights.best.hdf5'.format(i)
-checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-callbacks_list = [checkpoint,lrate]
+checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=args.v, save_best_only=True, mode='max')
+callbacks_list = [checkpoint,lrate,csv_logger]
 
 history = model.fit_generator(train_gen,
                     epochs=epochs,
-                    verbose=1,
+                    verbose=args.v,
                     validation_data=val_gen, max_queue_size = 5, 
                     callbacks = callbacks_list)
 
