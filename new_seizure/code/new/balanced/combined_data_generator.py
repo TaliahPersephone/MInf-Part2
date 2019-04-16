@@ -7,7 +7,7 @@ from threading import Lock
 path = '/home/taliah/Documents/Course/Project/new_seizure/data/6464/h5/{}'
 
 class combined_data_generator(Sequence):
-	def __init__(self,files, flips = ['original','h_flip'],orientations = ['','_1','_n1','_2','_n2'], batch_size = 623, seed = 2573, contiguous = True, lock = None):
+	def __init__(self,files, flips = ['original','h_flip'],orientations = ['','_1','_n1','_2','_n2'], batch_size = 534, seed = 2573, contiguous = True, lock = None):
 
 		trans = [''.join(i) for i in product(flips,orientations)]
 
@@ -18,14 +18,20 @@ class combined_data_generator(Sequence):
 
 		r = np.random.RandomState(seed)
 
-		for f in self.files:
-			ind = np.arange(7476)
+		for name in self.files:
+			f = tables.open_file(path.format(name[0]))
+			n = f.root.balance_targets[:].size
+			f.close()
+		
+			ind = np.arange(n)
 			if not contiguous:
 				r.shuffle(ind)
 
-			inds = np.array([ind[i*batch_size:(i+1)*batch_size] for i in range(7476 // batch_size)])
+			inds = np.array([ind[i*batch_size:(i+1)*batch_size] for i in range(n // batch_size)])
+			#print(n)
+			#print(inds)
 
-			src.extend(list(product([f],inds)))
+			src.extend(list(product([name],inds)))
 
 
 		r.shuffle(src)
@@ -48,66 +54,15 @@ class combined_data_generator(Sequence):
 
 		f = tables.open_file(path.format(filename),'r')
 
-		#data = np.zeros((self.batch_size,64*64+6272))
+		cnn_data = f.root['balance_{}'.format(orientation)][:][inds]
+		hist_data = f.root['balance_hist_{}'.format(orientation)][:][inds]
+		coords = f.root['balance_coords'][:][inds]
 
-		if (orientation == 'original'): 
-			#data[:,:64*64] = f.root.original[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_original[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'original_1'): 
-			#data[:,:64*64] = f.root.original_1[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_original_1[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'original_n1'): 
-			#data[:,:64*64] = f.root.original_n1[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_original_n1[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'original_2'): 
-			#data[:,:64*64] = f.root.original_2[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_original_2[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'original_n2'): 
-			#data[:,:64*64] = f.root.original_n2[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_original_n2[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'h_flip'): 
-			#data[:,:64*64] = f.root.h_flip[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_h_flip[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'h_flip_1'): 
-			#data[:,:64*64] = f.root.h_flip_1[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_h_flip_1[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'h_flip_n1'): 
-			#data[:,:64*64] = f.root.h_flip_n1[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_h_flip_n1[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'h_flip_2'): 
-			#data[:,:64*64] = f.root.h_flip_2[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_h_flip_2[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		elif (orientation == 'h_flip_n2'): 
-			#data[:,:64*64] = f.root.h_flip_n2[:][inds].reshape((-1,64*64))
-			#data[:,64*64:] = f.root.hist_h_flip_n2[:][inds]
-			cnn_data = f.root.original[:][inds].reshape((-1,64*64))
-			hist_data = f.root.hist_original[:][inds]
-		else:
-			raise Exception
-
-		targets = f.root.targets[:][inds]
+		targets = f.root['balance_targets'][:][inds]
 
 		f.close()
 
 		self.mutex.release()
 
-		return [cnn_data, hist_data], targets
+		return [cnn_data, hist_data, coords], targets
 

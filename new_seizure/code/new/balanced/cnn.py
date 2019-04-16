@@ -69,9 +69,9 @@ val_gen = cnn_data_generator(files = v,seed = seed, batch_size = batch_size,cont
 model = cnn_model(args.coords)
 
 lrate = LearningRateScheduler(step_decay)
-csv_logger = CSVLogger('logs/full_cnn_mk2.log',append=True)
+csv_logger = CSVLogger('logs/full_cnn_mk3.log',append=True)
 
-filepath = 'models/fold{}.cnn_lstm_coords_end.weights.best.hdf5'.format(i)
+filepath = 'models/fold{}.cnn_lstm_coords_end_mk3.weights.best.hdf5'.format(i)
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=args.v, save_best_only=True, mode='max')
 callbacks_list = [checkpoint,lrate,csv_logger]
 

@@ -28,6 +28,11 @@ def cnn_model(coords = True):
 	x = Conv2D(40, kernel_size=3,padding='same',activation='relu')(x)
 	x = BatchNormalization()(x)
 	x = MaxPooling2D(pool_size=(2,2),strides=(2,2))(x)
+	'''
+	x = Conv2D(40, kernel_size=3,padding='same',activation='relu')(x)
+	x = BatchNormalization()(x)
+	x = MaxPooling2D(pool_size=(2,2),strides=(2,2))(x)
+	'''
 	x = Flatten()(x)
 
 	coords_input = Input(shape=(4,),name='coords_input')

@@ -147,7 +147,7 @@ def horn_schunck(im1,im2,Niter=10):
 	return U, V
 
 
-def HS(im1, im2, alpha=1, Niter=100):
+def HS(im1, im2, alpha=1, Niter=10):
 	"""
 	im1: image at t=0
 	im2: image at t=1
@@ -212,13 +212,14 @@ def HOF(i, o):
 	arrayB = arrayA.T
 	prev_frame = None
 	if True:
-		frame = i.get()
+		n,frame = i.get()
 
 		if prev_frame is None:
 			prev_frame = frame
-			frame = i.get()
+			m = n
+			n,frame = i.get()
 
-		v1, v2 = horn_schunck(prev_frame,frame)
+		v1, v2 = HS(prev_frame,frame)
 
 		mag = np.sqrt(v1**2 + v2**2)
 		ang = np.arctan2(v1,v2)
@@ -240,6 +241,47 @@ def HOF(i, o):
 
 		hof = make_block(oM,arrayA,arrayB)
 	
-		o.put(hof)	
+		o.put((m,hof))	
 
 		
+
+def MBHr(i, o):
+	arrayA = diag_matrix_linear()
+	arrayB = arrayA.T
+	prev_frame = None
+	if True:
+		n,frame = i.get()
+
+		if prev_frame is None:
+			prev_frame = frame
+			m = n
+			n,frame = i.get()
+
+		v1, _ = HS(prev_frame,frame)
+
+		ogIm = haar_gradients(v1)
+
+		hogs = make_block(ogIm,arrayA,arrayB)
+
+		o.put((m,hogs))
+		
+	
+def MBHc(i, o):
+	arrayA = diag_matrix_linear()
+	arrayB = arrayA.T
+	prev_frame = None
+	if True:
+		n,frame = i.get()
+
+		if prev_frame is None:
+			prev_frame = frame
+			m = n
+			n,frame = i.get()
+
+		_, v2 = HS(prev_frame,frame)
+	
+		ogIm = haar_gradients(v2)
+
+		hogs = make_block(ogIm,arrayA,arrayB)
+
+		o.put((m,hogs))
