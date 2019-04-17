@@ -4,8 +4,8 @@ from tp_tn import tp, tn
 from keras.models import Sequential
 from keras.layers import SimpleRNN,Dense, BatchNormalization, LSTM, Reshape
 from keras.optimizers import RMSprop, Adam
-from hist_data_generator import hist_data_generator
-from keras.callbacks import ModelCheckpoint, LearningRateScheduler, CSVLogger
+from hist_data_generator import *
+from keras.callbacks import ModelCheckpoint, LearningRateScheduler,CSVLogger
 import sys
 import os
 from threading import Lock
@@ -15,15 +15,22 @@ from get_folds import *
 from hist_model import *
 from lr import step_decay
 
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 parser = argparse.ArgumentParser()
-parser.add_argument('--layers', type=int, default = 2)
-parser.add_argument('--size',type=int, default = 512)
-parser.add_argument('--cont',type=bool,default=True)
-parser.add_argument('--f',type=int,default=0)
+parser.add_argument('--layers', type=int, default = 5)
+parser.add_argument('--size',type=int, default = 1024)
+parser.add_argument('--last',default='LSTM')
+parser.add_argument('--cont',type=str2bool,default=True)
+parser.add_argument('--f',type=int,default=5)
 parser.add_argument('--v',type=int,default=1)
 #parser.add_argument('--t',type=int,default=4)
 parser.add_argument('--epoch',type=int,default=5)
-parser.add_argument('--coords',default='end')
 args = parser.parse_args()
 
 mutex = Lock()
@@ -51,6 +58,7 @@ folds = get_folds()
 
 i = args.f
 
+
 if args.f == 5:
 	t = files
 	v = []
@@ -63,9 +71,11 @@ else:
 	for j in files:
 		if j not in v:
 			t += [j]
+	
+	
 
-train_gen = hist_data_generator(files = t,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex,coords=args.coords)
-val_gen = hist_data_generator(files = v,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex,coords=args.coords)
+train_gen = hist_data_generator(files = t,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
+val_gen = hist_data_generator(files = v,orientations=[''],seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex,coords=True)
 
 sizes = []
 
@@ -73,26 +83,17 @@ for j in range(layers):
 	sizes += [hidden_units]
 
 
-if args.coords == 'start':
-	model = coords_start_hist_model(layers,sizes)
-else:
-	model = coords_end_hist_model(layers,sizes)
 
-
+model = coords_end_hist_model(layers,sizes)
 lrate = LearningRateScheduler(step_decay)
-csv_logger = CSVLogger('logs/full_hist_{}_{}x{}_{}.log'.format(i,layers,hidden_units,args.coords),append=True)
 
-filepath = 'models/fold{}.{}l.{}h.coords-{}.weights.best.hdf5'.format(i,layers,hidden_units,args.coords)
-checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=args.v, save_best_only=True, mode='max')
-callbacks_list = [checkpoint,lrate,csv_logger]
+filepath = '5x1024_coords.68.hdf5'
 
-history = model.fit_generator(train_gen,
-                    epochs=epochs,
-                    verbose=args.v,
-                    validation_data=val_gen, max_queue_size = 4, 
-                    callbacks = callbacks_list)
+model.load_weights(filepath)
 
+score = model.predict_generator(val_gen,max_queue_size=4, verbose=1)
 
+print(score)
 
 keras.backend.clear_session()
 

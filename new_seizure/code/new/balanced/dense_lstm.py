@@ -30,7 +30,7 @@ parser.add_argument('--cont',type=str2bool,default=True)
 parser.add_argument('--f',type=int,default=0)
 parser.add_argument('--v',type=int,default=1)
 #parser.add_argument('--t',type=int,default=4)
-parser.add_argument('--epoch',type=int,default=5)
+parser.add_argument('--epoch',type=int,default=10)
 args = parser.parse_args()
 
 mutex = Lock()
@@ -58,11 +58,21 @@ folds = get_folds()
 
 i = args.f
 
-v = folds[i]
-t = []
-for j in files:
-	if j not in v:
-		t += [j]
+
+if args.f == 5:
+	t = files
+	v = []
+	for filename in os.listdir(path):
+		if filename[5] == '4' and filename.endswith('h5'): 
+			v += [filename]
+else:
+	v = folds[i]
+	t = []
+	for j in files:
+		if j not in v:
+			t += [j]
+	
+	
 
 train_gen = hist_data_generator(files = t,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
 val_gen = hist_data_generator(files = v,seed = seed, batch_size = batch_size,contiguous=args.cont,lock=mutex)
@@ -76,11 +86,10 @@ for j in range(layers):
 
 model = hist_model(layers,sizes,args.last)
 lrate = LearningRateScheduler(step_decay)
-csv_logger = CSVLogger('logs/full_hist_{}_{}x{}.log'.format(i,layers,hidden_units),append=True)
 
 filepath = 'models/fold{}.{}l.{}h.{}-last.weights.best.hdf5'.format(i,layers,hidden_units,args.last)
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=args.v, save_best_only=True, mode='max')
-callbacks_list = [checkpoint,lrate,csv_logger]
+callbacks_list = [checkpoint,lrate]
 
 history = model.fit_generator(train_gen,
                     epochs=epochs,

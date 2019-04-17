@@ -21,23 +21,30 @@
 #python dense_lstm.py --f 2 --layers 2 --size 4096 >> logs/full_2x4096Dense_LSTM.log
 #python dense_lstm.py --f 3 --layers 2 --size 4096 >> logs/full_2x4096Dense_LSTM.log
 
-python dense_lstm.py --f 0 --layers 3 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 0 --layers 3 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python dense_lstm.py --f 0 --layers 3 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python dense_lstm.py --f 0 --layers 3 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#
+#python dense_lstm.py --f 0 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python dense_lstm.py --f 0 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python dense_lstm.py --f 1 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python dense_lstm.py --f 1 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python dense_lstm.py --f 2 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
+#python coords_hist_run.py --f 5 --layers 5 --size 1024 >> logs/test_5x1024Dense_coords_LSTM.log 
+#python coords_hist_run.py --f 5 --layers 5 --size 1024 --coords start >> logs/test_5x1024Dense_startcoords_LSTM.log 
+python coords_hist_run.py --f 5 --epoch 20 --layers 5 --size 1024 >> logs/test_5x1024Dense_startcoords_LSTM.log 
+python coords_hist_run.py --f 5 --epoch 20 --layers 5 --size 1024 >> logs/test_5x1024Dense_startcoords_LSTM.log 
+#python dense_lstm.py --f 0 --layers 8 --size 1024 >> logs/full_8x1024Dense_LSTM.log 
+#python dense_lstm.py --f 1 --layers 8 --size 1024 >> logs/full_8x1024Dense_LSTM.log 
+#python dense_lstm.py --f 2 --layers 8 --size 1024 >> logs/full_8x1024Dense_LSTM.log 
+#python dense_lstm.py --f 3 --layers 8 --size 1024 >> logs/full_8x1024Dense_LSTM.log 
+#python dense_lstm.py --f 5 --layers 5 --size 1024 >> logs/test_5x1024Dense_LSTM.log 
+#python dense_lstm.py --f 5 --layers 5 --size 1024 >> logs/test_5x1024Dense_LSTM.log 
 
-python dense_lstm.py --f 0 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 0 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 1 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 1 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 2 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 2 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 3 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-python dense_lstm.py --f 3 --layers 10 --size 1024 >> logs/full_10x1024Dense_LSTM.log 
-
-python dense_lstm.py --f 0 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 0 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 1 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 1 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 2 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 2 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 3 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
-python dense_lstm.py --f 3 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 0 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 1 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 2 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 3 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 0 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 1 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 2 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
+#python dense_lstm.py --f 3 --layers 10 --size 2048 >> logs/full_10x2048Dense_LSTM.log 
