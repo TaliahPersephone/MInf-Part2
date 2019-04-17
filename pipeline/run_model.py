@@ -6,7 +6,15 @@ import os
 import threading
 import numpy as np
 
-
+'''
+' This will load a keras model and evaluate inputs. It monitors over a window of values.
+' Inputs:
+'	model	- model to load (model_json, weights.hdf5
+'	i	- input features queue
+'	coords	- coords features queue
+' Outputs:
+'	o 	- queue outputting detection of seizures
+'''
 def run_model(model,i,coords,o):
 	model_json, weights_name = model
 
