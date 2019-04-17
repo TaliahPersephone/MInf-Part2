@@ -22,7 +22,6 @@
 
 # Logs and databases #
 ######################
-*.log
 *.sql
 *.sqlite
 
@@ -43,3 +42,12 @@ Thumbs.db
 pyvenv/*
 *.avi
 *.flv
+*.mat
+RealTime_dense_descriptors/*
+RealTime_dense_descriptors
+RealtimeHogHofMbhHmgReleaseSourceV1/*
+__MACOSX/*
+*.h5
+*.hdf5
+*.npy
+working*

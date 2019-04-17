@@ -1,0 +1,32 @@
+INFO:root:Basic on fold 0 with 40cnn k=5, 256cnn k=5, 512 dense, batch normalisation, relu
+INFO:root:Batch_size 128, epochs 5
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:Basic on fold 0 with 40cnn k=5, 256cnn k=5, 512 dense, batch normalisation, relu
+INFO:root:Batch_size 128, epochs 5
+INFO:root:Basic on fold 0 with 40cnn k=5, 256cnn k=5, 512 dense, batch normalisation, relu
+INFO:root:Batch_size 128, epochs 5
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:Basic on fold 0 with 40cnn k=5, 256cnn k=5, 512 dense, batch normalisation, relu
+INFO:root:Batch_size 128, epochs 5
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:Basic on fold 0 with 40cnn k=5, 256cnn k=5, 512 dense, batch normalisation, relu
+INFO:root:Batch_size 128, epochs 5
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:Basic on fold 0 with 40cnn k=5, 256cnn k=5, 512 dense, batch normalisation, relu
+INFO:root:Batch_size 128, epochs 5
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+
+acc, epoch 2 : 0.945

@@ -1,0 +1,41 @@
+INFO:root:Folds:7
+Layers:2	Size:512
+Epochs:20
+Batch:128
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:Folds:7
+Layers:2	Size:512
+Epochs:20
+Batch:128
+INFO:root:Folds:7
+Layers:2	Size:512
+Epochs:20
+Batch:128
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:Folds:7
+Layers:2	Size:512
+Epochs:20
+Batch:128
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+
+710220/710220 [==============================] - 1358s 2ms/step - loss: 0.0108 - acc: 0.9961 - val_loss: 1.7743 - val_acc: 0.7864
+
+

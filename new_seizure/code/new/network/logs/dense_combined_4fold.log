@@ -1,0 +1,36 @@
+INFO:root:Combined Model 
+INFO:root:Batch_size 534, epochs 2
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:None
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:Combined Model 
+INFO:root:Batch_size 534, epochs 2
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:None
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:Combined Model 
+INFO:root:Batch_size 534, epochs 2
+INFO:root:Combined Model 
+INFO:root:Batch_size 534, epochs 2
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+INFO:root:None
+WARNING:tensorflow:From /home/taliah/Documents/Course/Project/working/lib/python3.7/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:root:[0.46125347699437824, 0.8869047654526574]
+INFO:root:None
+INFO:root:[0.5036806538701057, 0.7462546860000917]
+INFO:root:None
+INFO:root:[0.4031465915696962, 0.8646335027047566]
+INFO:root:None
+INFO:root:[0.6505620596664292, 0.6687399660503226]
