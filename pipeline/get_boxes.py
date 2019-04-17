@@ -4,6 +4,7 @@
 '''
 
 import queue
+import numpy as np
 import csv
 
 
@@ -13,7 +14,7 @@ import csv
 ' Output:
 '	o - queue to ouput box information to
 '''
-def get_boxes(i, o coords):
+def get_boxes(i, o, coords):
 	boxes = csv.reader(open(i))
 	old_x = None
 	old_y = None

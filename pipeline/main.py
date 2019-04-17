@@ -19,17 +19,12 @@ import threading
 from queue import Queue
 import argparse
 from hist_preprocess import *
+from feed_hist import *
 from get_frames import *
 from get_boxes import *
+from run_model import *
 #import keras
 #from keras.models import model_from_json
-
-def run_model(model,i,o):
-	while True:
-		w = i.get()
-
-		o.put('nice')
-
 
 def single_pipe(i, o):
 	while True:
@@ -82,6 +77,9 @@ if __name__ == "__main__":
 	parser.add_argument('--data',nargs='+',help='Which data each model accepts [hist|cnn|combined]')
 	parser.add_argument('--input', help='Input handle, default will use /dev0')
 	parser.add_argument('--boxes',help='Input to be passed to the get_boxes function')
+	parser.add_argument('--start',type=int,help='Starting frame to match with box')
+	parser.add_argument('--show',type=int,help='Show the frames?',default=0)
+	parser.add_argument('--test',help='File with targets if desired')
 	parser.add_argument('--matlab',help='Numpy file of Matlab computed histograms if desired')
 	args = parser.parse_args()
 
@@ -98,6 +96,8 @@ if __name__ == "__main__":
 	if len(args.data) != len(args.models):
 		raise AssertionError('Number of data inputs supplied does not match the number of models')
 
+	if len(args.labels) < len(args.models):
+		args.labels.append(list(range(len(args.labels),len(args.models))))
 
 	for d in args.data:
 		if d not in ['hist','cnn','combined']:
@@ -107,13 +107,13 @@ if __name__ == "__main__":
 	boxes = Queue(50)
 
 	frames_to = []	
-	coords_to[]
+	coords_to = []
 
 	# Create necessary queues if at least one of the models uses the hist data
 	if 'hist' in args.data or 'combined' in args.data:
 		
 		hist_to = []
-		if args.matlab is None:
+		if args.matlab is not None:
 			hist = [Queue(50),Queue(50)]
 			frames_to += [hist[0]]
 		else:
@@ -158,7 +158,7 @@ if __name__ == "__main__":
 	t.start()
 	
 	# Start the thread reading frames
-	t = threading.Thread(target=get_frames,args=(args.input,boxes,frames))
+	t = threading.Thread(target=get_frames,args=(args.input,boxes,frames,args.start,args.show))
 	t.daemon = True
 	t.start()
 	
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 	
 	# Start the hist threads
 	if 'hist' in args.data or 'combined' in args.data:
-		if args.matlab is None:
+		if args.matlab is not None:
 			t = threading.Thread(target=feed_hist,args=(hist[0],args.matlab,hist_to))
 			t.daemon = True
 			t.start()
@@ -198,17 +198,30 @@ if __name__ == "__main__":
 
 
 	for i in range(len(args.data)):
-		t = threading.Thread(target=run_model,args=(models[i],models_in[i],models_out[i]))
+		t = threading.Thread(target=run_model,args=(models[i],models_in[i],coords_to[i],models_out[i]))
 		t.daemon = True
 		t.start()
 
+
+	if args.test is not None:
+		targets = csv.reader(open(args.test))
+		correct =  0 
+		count = 0
 
 	while True:
 		for i in range(len(args.data)):
 			pred = models_out[i].get()
 
-			print('{}\t{}'.format(args.labels[i],pred))
+			if args.test is not None:
+				t = int(next(targets)[1])
+				correct += (t == pred) 
+				count += 1
+				s = '{}\t{}\t{}\t{}\t{}'.format(args.labels[i],pred,t,count,correct)
+			else:
+				s = '{}\t{}'.format(args.labels[i],pred)
 
-		
+
+			print(s)
+
 		
 

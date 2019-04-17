@@ -11,6 +11,8 @@ m_4x512_tp	= [27.43,8.83257097339161]
 m_4x512_acc	= [64.785,6.67124426175507]
 m_5x512_tp 	= [36.4938,14.15678038667]
 m_5x512_acc	= [67.274,7.86160441640254]
+m_8x512_tp	= [40.995,11.376527003733]
+m_8x512_acc	= [68.873,2.99626689954906]
 m_10x512_tp	= [36.3575,7.18575616526658]
 m_10x512_acc	= [69.637,6.11178015529573]
 
@@ -37,9 +39,9 @@ m_2x8192_tp	= [27.1675,20.338091314903]
 m_2x8192_acc	= [59.4868,11.0598992272383]
 
 
-size_512_x = np.array([2,3,4,5,10])
-size_512_acc 	= np.array([m_2x512_acc[0],m_3x512_acc[0],m_4x512_acc[0],m_5x512_acc[0],m_10x512_acc[0]])
-size_512_acc_err = np.array([m_2x512_acc[1],m_3x512_acc[1],m_4x512_acc[1],m_5x512_acc[1],m_10x512_acc[1]])
+size_512_x = np.array([2,3,4,5,8,10])
+size_512_acc 	= np.array([m_2x512_acc[0],m_3x512_acc[0],m_4x512_acc[0],m_5x512_acc[0],m_8x512_acc[0],m_10x512_acc[0]])
+size_512_acc_err = np.array([m_2x512_acc[1],m_3x512_acc[1],m_4x512_acc[1],m_5x512_acc[1],m_8x512_acc[1],m_10x512_acc[1]])
 
 size_1024_x = np.array([2,3,5,10])
 size_1024_acc 	= np.array([m_2x1024_acc[0],m_3x1024_acc[0],m_5x1024_acc[0],m_10x1024_acc[0]])
@@ -57,9 +59,9 @@ size_8192_x = np.array([2])
 size_8192_acc 	= np.array([m_2x8192_acc[0]])
 size_8192_acc_err = np.array([m_2x8192_acc[1]])
 
-size_512_x = np.array([2,3,4,5,10])
-size_512_tp 	= np.array([m_2x512_tp[0],m_3x512_tp[0],m_4x512_tp[0],m_5x512_tp[0],m_10x512_tp[0]])
-size_512_tp_err = np.array([m_2x512_tp[1],m_3x512_tp[1],m_4x512_tp[1],m_5x512_tp[1],m_10x512_tp[1]])
+size_512_x = np.array([2,3,4,5,8,10])
+size_512_tp 	= np.array([m_2x512_tp[0],m_3x512_tp[0],m_4x512_tp[0],m_5x512_tp[0],m_8x512_tp[0],m_10x512_tp[0]])
+size_512_tp_err = np.array([m_2x512_tp[1],m_3x512_tp[1],m_4x512_tp[1],m_5x512_tp[1],m_8x512_tp[1],m_10x512_tp[1]])
 
 size_1024_x = np.array([2,3,5,10])
 size_1024_tp 	= np.array([m_2x1024_tp[0],m_3x1024_tp[0],m_5x1024_tp[0],m_10x1024_tp[0]])

@@ -23,7 +23,7 @@ import numpy as np
 '	o - output queue
 '
 '''
-def get_frames(i, boxes, o):
+def get_frames(i, boxes, o, start = 0, show = 0):
 	cap = cv.VideoCapture(i)
 
 	count = 0
@@ -35,17 +35,22 @@ def get_frames(i, boxes, o):
 			print('End of stream has been read')
 			break
 
+		if show:
+			cv.imshow('frame',frame)
+			if cv.waitKey(1) & 0xFF == ord('q'):
+				break
+
 		box = boxes.get()
 
 		box_frame = box[0]
 
-		while (box_frame - 30000 < count):
+		while (box_frame - start < count):
 			print('Skipping box')
 			box = boxes.get()
 	
 
 		old_count = count
-		while (box_frame - 30000 > count):
+		while (box_frame - start > count):
 			ret, frame = cap.read()
 			count += 1
 
