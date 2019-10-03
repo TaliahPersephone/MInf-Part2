@@ -15,3 +15,6 @@ Code for data processing and neural nets can be found in new_seizure/code/new/
   balance/ is code for tests after balance split and logs from tests
 
   results/ are some resulting weights
+  
+  
+  The final report is	MInf_Project_Part_2_s1406405.pdf
